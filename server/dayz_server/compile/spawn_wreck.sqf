@@ -28,7 +28,7 @@ if (isDedicated) then {
 			_itemChance = [0.18, 0.29, 0.04, 0.04, 0.05, 0.02, 0.01, 0.04, 0.01, 0.04, 0.11, 0.07, 0.02, 0.06, 0.04];	
 		};
 		case "HeliCrash": {
-			_itemType = [["FN_FAL", "weapon"], ["bizon_silenced", "weapon"], ["M14_EP1", "weapon"], ["FN_FAL_ANPVS4", "weapon"], ["M107_DZ", "weapon"], ["BAF_AS50_scoped", "weapon"], ["Mk_48_DZ", "weapon"], ["M249_DZ", "weapon"], ["BAF_L85A2_RIS_CWS", "weapon"], ["DMR", "weapon"], ["", "military"], ["", "medical"], ["MedBox0", "object"], ["NVGoggles", "weapon"], ["AmmoBoxSmall_556", "object"], ["AmmoBoxSmall_762", "object"], ["Skin_Camo1_DZ", "magazine"], ["Skin_Sniper1_DZ", "magazine"]];
+			_itemType = [["FN_FAL", "weapon"], ["bizon_silenced", "weapon"], ["M14_EP1", "weapon"], ["FN_FAL_ANPVS4", "weapon"], ["M107_DZ", "weapon"], ["BAF_AS50_scoped", "weapon"], ["Mk_48_DZ", "weapon"], ["M249_DZ", "weapon"], ["BAF_L85A2_RIS_Holo", "weapon"], ["DMR", "weapon"], ["", "military"], ["", "medical"], ["MedBox0", "object"], ["NVGoggles", "weapon"], ["AmmoBoxSmall_556", "object"], ["AmmoBoxSmall_762", "object"], ["Skin_Camo1_DZ", "magazine"], ["Skin_Sniper1_DZ", "magazine"]];
 			_itemChance = [0.02, 0.05, 0.05, 0.02, 0.01, 0.02, 0.03, 0.05, 0.01, 0.1, 1, 0.5, 0.1, 0.01, 0.1, 0.1, 0.08, 0.05];
 		};
 		case "Farm": {
