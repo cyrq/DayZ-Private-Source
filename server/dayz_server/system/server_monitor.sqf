@@ -67,6 +67,7 @@ if (_status == "ObjectStreamStart") then {
 	_hitPoints 	= _x select 6;
 	_fuel 		= _x select 7;
 	_damage 	= _x select 8;
+	_uniqueID	= _x select 9;
 	_dir 		= 0;
 	_pos 		= [0,0,0];
 	_wsDone 	= false;
@@ -91,6 +92,7 @@ if (_status == "ObjectStreamStart") then {
 		_object = createVehicle [_type, _pos, [], 0, "CAN_COLLIDE"];
 		_object setVariable ["lastUpdate", time];
 		_object setVariable ["ObjectID", _idKey, true];
+		_object setVariable ["ObjectUID", _uniqueID, true];
 		_object setVariable ["CharacterID", _ownerID, true];
 		
 		clearWeaponCargoGlobal  _object;
@@ -100,6 +102,7 @@ if (_status == "ObjectStreamStart") then {
 			_pos set [2,0];
 			_object setpos _pos;
 			_object addMPEventHandler ["MPKilled", { _this call vehicle_handleServerKilled; }];
+			_object setVariable ["ObjectID", "0", true];
 		};
 		_object setdir _dir;
 		_object setDamage _damage;
