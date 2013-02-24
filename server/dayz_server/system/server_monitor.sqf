@@ -10,7 +10,7 @@ dayz_serverVersionNo	= "5.9.0.0";
 dayz_plusVersionNo		= null;
 
 if (getText(configFile >> "CfgMods" >> "DayZ" >> "name") == "DayZ+") then {
-	dayz_plusVersionNo == getNumber(configFile >> "CfgMods" >> "DayZ" >> "hiveVersion");
+	dayz_plusVersionNo == getNumber(configFile >> "CfgMods" >> "DayZ" >> "version");
 };
 
 diag_log format ["SERVER: VERSION: CC %1", dayz_serverVersionNo];
