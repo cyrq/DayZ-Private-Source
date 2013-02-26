@@ -106,7 +106,7 @@ if (_characterID != "0") then {
 			};
 		};
 		_temp = round(_character getVariable ["temperature", 100]);
-		_currentState = [str(_currentWpn), str(_currentAnim), _temp];
+		_currentState = [_currentWpn, _currentAnim, _temp];
 		if (count _playerPos > 0) then {
 			_array = [];
 			{
