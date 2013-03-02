@@ -110,7 +110,7 @@ if (_characterID != "0") then {
 		if (count _playerPos > 0) then {
 			_array = [];
 			{
-				if (_x > -20000 and _x < 20000) then { _array set [count _array, _x]; };
+				if (_x > -21000 and _x < 21000) then { _array set [count _array, _x]; };
 			} forEach (_playerPos select 1);
 			_playerPos set [1, _array];
 		};

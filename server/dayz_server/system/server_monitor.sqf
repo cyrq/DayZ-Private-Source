@@ -190,8 +190,8 @@ _result 	= _key call server_hiveReadWrite;
 _outcome 	= _result select 0;
 if (_outcome == "PASS") then {
 	_date = _result select 1; 
-	if (isDedicated) then { ["dayzSetDate", _date] call broadcastRpcCallAll; };
-	diag_log ("SERVER: Local Time set to " + str(_date));
+	if (isDedicated) then { setDate _date; };
+	diag_log(format["SERVER: Local Time set to %1", _date]);
 };
 
 // Finish initialization ----------------------------------------------------------------------------------------------

@@ -256,10 +256,10 @@ class FSM
        "if(_outcome == ""PASS"") then {" \n
        "	_date = _result select 1; " \n
        "	_dateNum = dateToNumber(_date); " \n
-       "	_diff = ( _dateNum - dateToNumber (date) )*365*24*60;" \n
-       "	if ( abs(_diff)>5 ) then {" \n
-       "		[""dayzSetDate"",_date] call broadcastRpcCallAll;" \n
-       "		diag_log (""TIME SYNC: Local Time set to "" + str(_date));" \n
+       "	_diff = ((_dateNum - dateToNumber(date)) * 365 * 24 * 60);" \n
+       "	if(abs(_diff) > 5) then {" \n
+       "		setDate _date;" \n
+       "		diag_log(format[""TIME SYNC: Local Time set to %1"", _date]);" \n
        "	};" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
