@@ -25,6 +25,7 @@ if (_characterID == "0") exitWith {
 private["_debug", "_distance"];
 _debug = getMarkerpos "respawn_west";
 _distance = _debug distance _charPos;
+
 if (_distance < 2000) exitWith { 
 	diag_log format["PLAYER: SYNC FAILED: Position in debug [%1,%2,%3]", _name, _characterID, _charPos];
 };
@@ -44,21 +45,25 @@ if (_characterID != "0") then {
 		if (!(((_charPos select 0) == 0) and ((_charPos select 1) == 0))) then {
 			_playerPos = [round(direction _character), _charPos];
 			_lastPos = _character getVariable["lastPos", _charPos];
+			
 			if (count _lastPos > 2 and count _charPos > 2) then {
 				if (!_isInVehicle) then { _distanceFoot = round(_charPos distance _lastPos); };
 				_character setVariable["lastPos", _charPos];
 			};
+			
 			if (count _charPos < 3) then {
 				_playerPos = [];
 			};
 		};
 		_character setVariable ["posForceUpdate", false, true];
 	};
+	
 	if (_isNewGear) then {
 		_playerGear 	= [weapons _character, _magazines];
 		_backpack 		= unitBackpack _character;
 		_playerBackp 	= [typeOf _backpack, getWeaponCargo _backpack, getMagazineCargo _backpack];
 	};
+	
 	if (_isNewMed or _force) then {
 		if (!(_character getVariable["USEC_isDead", false])) then { _medical = _character call player_sumMedical; };
 		_character setVariable ["medForceUpdate", false, true];
@@ -82,12 +87,14 @@ if (_characterID != "0") then {
 		_currentModel 	= typeOf _character;
 		_modelChk 		= _character getVariable ["model_CHK", ""];
 		_character addScore _kills;
+		
 		if (_currentModel == _modelChk) then {
 			_currentModel = "";
 		} else {
 			_currentModel = str(_currentModel);
 			_character setVariable ["model_CHK", typeOf _character];
 		};
+		
 		if (_onLadder or _isInVehicle or _isTerminal) then {
 			_currentAnim = "";
 			if ((count _playerPos > 0) and !_isTerminal) then {
@@ -95,6 +102,7 @@ if (_characterID != "0") then {
 				_playerPos set[1, _charPos];					
 			};
 		};
+		
 		if (_isInVehicle) then {
 			_currentWpn = "";
 		} else {
@@ -105,12 +113,14 @@ if (_characterID != "0") then {
 				_currentWpn = "";
 			};
 		};
+		
 		_temp = round(_character getVariable ["temperature", 100]);
 		_currentState = [_currentWpn, _currentAnim, _temp];
+		
 		if (count _playerPos > 0) then {
 			_array = [];
 			{
-				if (_x > -21000 and _x < 21000) then { _array set [count _array, _x]; };
+				if (_x > -25600 and _x < 25600) then { _array set [count _array, _x]; };
 			} forEach (_playerPos select 1);
 			_playerPos set [1, _array];
 		};
@@ -128,7 +138,7 @@ if (_characterID != "0") then {
 			[vehicle _character, "position"] call server_updateObject;
 		};
 		
-		// Force gear updates for nearby vehicles/tents
+		// Force gear updates for nearby vehicles and deployables
 		[_charPos] call server_updateNearbyObjects;
 
 		// Reset timer
