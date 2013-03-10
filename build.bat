@@ -28,7 +28,7 @@ echo Instance 1:
 echo ^> Skipping ...
 for /l %%i in (2,1,6) do (
 echo Instance %%i:
-for %%f in (chernarus fallujah lingor mbg_celle2 namalsk panthera2 takistan tavi thirsk utes zargabad) do (
+for %%f in (chernarus fallujah lingor mbg_celle2 namalsk panthera2 takistan tavi thirsk utes zargabad oring isladuala) do (
 echo ^> Building mission for "%%f"
 mkdir temp > nul
 xcopy mission\dayz.%%f temp /S /E /Q /C /R /Y > nul
@@ -40,7 +40,7 @@ rmdir /s /q temp > nul
 
 for /l %%i in (1,1,6) do (
 echo Instance %%i ^(rMod^):
-for %%f in (chernarus fallujah lingor mbg_celle2 namalsk panthera2 takistan tavi thirsk utes zargabad) do (
+for %%f in (chernarus fallujah lingor mbg_celle2 namalsk panthera2 takistan tavi thirsk utes zargabad oring isladuala) do (
 echo ^> Building mission for "%%f"
 mkdir temp > nul
 xcopy mission\dayz.%%f temp /S /E /Q /C /R /Y > nul
