@@ -1,5 +1,5 @@
 // Mission Initialization
-startLoadingScreen ["", "RscDisplayLoadCustom"];
+startLoadingScreen ["", "DayZ_loadingScreen"];
 cutText ["", "BLACK OUT"];
 enableSaving [false, false];
 
@@ -29,6 +29,7 @@ setToneMapping "Filmic";
 
 // Run the server monitor
 if (isServer) then {
+	hiveInUse = true;
 	_serverMonitor = [] execVM "\z\addons\dayz_server\system\server_monitor.sqf";
 };
 
