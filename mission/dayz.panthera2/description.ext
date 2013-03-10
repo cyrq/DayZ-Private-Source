@@ -1,9 +1,11 @@
 respawn = "BASE";
 respawndelay = 5;
+loadScreen = "\z\addons\dayz_code\gui\dayz_logo_ca.paa";
 onLoadMission = "DayZ Panthera";
 OnLoadIntro = "Welcome to Panthera";
 OnLoadIntroTime = False;
 OnLoadMissionTime = False;
+onPauseScript = "\z\addons\dayz_code\compile\player_onPause.sqf";
 disabledAI = true;
 disableChannels[] = {0,2,6};
 enableItemsDropping = 0;

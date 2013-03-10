@@ -1,11 +1,11 @@
 respawn = "BASE";
 respawndelay = 5;
-loadScreen = "\z\addons\dayz_code\gui\loadingscreen.paa";
-onLoadMission = "DayZ Thirsk";
-OnLoadIntro = "Welcome to Thirsk";
+loadScreen = "\z\addons\dayz_code\gui\dayz_logo_ca.paa";
+onLoadMission = "DayZ Isladuala";
+OnLoadIntro = "Welcome to Isladuala";
 OnLoadIntroTime = False;
 OnLoadMissionTime = False;
-onPauseScript = "\z\addons\dayz_code\compile\player_onPause.sqf";
+onPauseScript = "pause.sqf";
 disabledAI = true;
 disableChannels[] = {0,2,6};
 enableItemsDropping = 0;

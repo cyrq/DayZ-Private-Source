@@ -3,27 +3,25 @@ class Mission
 {
 	addOns[]=
 	{
-		"thirskw",
+		"chernarus",
 		"ca_modules_animals",
 		"dayz_code",
 		"dayz_weapons",
 		"dayz_equip",
 		"dayz_vehicles",
 		"cacharacters_pmc",
-		"THIRSK_Clouds",
 		"ca_modules_functions"
 	};
 	addOnsAuto[]=
 	{
 		"dayz_weapons",
 		"ca_modules_functions",
-		"THIRSK_Clouds",
-		"thirskw"
+		"chernarus"
 	};
 	randomSeed=11171215;
 	class Intel
 	{
-		briefingName="DayZ Thirsk";
+		briefingName="DayZ Chernarus";
 		briefingDescription="DayZ";
 		startWeather=0.067362607;
 		forecastWeather=0.52341133;
@@ -34,7 +32,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=3;
+		items=2;
 		class Item0
 		{
 			side="WEST";
@@ -1153,29 +1151,12 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={715.00104,27.912025,3363.9766};
+					position[]={708.96582,35.858719,3533.1272};
 					id=50;
 					side="LOGIC";
 					vehicle="FunctionsManager";
 					leader=1;
 					lock="UNLOCKED";
-					skill=0.60000002;
-				};
-			};
-		};
-		class Item2
-		{
-			side="LOGIC";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={716.64526,40,3583.5652};
-					id=101;
-					side="LOGIC";
-					vehicle="TH_SNOWING1";
-					leader=1;
 					skill=0.60000002;
 				};
 			};
@@ -1186,43 +1167,43 @@ class Mission
 		items=7;
 		class Item0
 		{
-			position[]={764.89941,16.612,568.6001};
+			position[]={7839.6055,381.33774,8414.7324};
 			name="center";
 			type="Empty";
 		};
 		class Item1
 		{
-			position[]={-4886.376,0.15034878,2921.4028};
+			position[]={-18697.58,379.53012,25815.256};
 			name="respawn_west";
 			type="Empty";
 		};
 		class Item2
 		{
-			position[]={4581.707,9.0793877,4217.1089};
+			position[]={4932.3345,0.39950246,1989.1094};
 			name="spawn0";
 			type="Empty";
 		};
 		class Item3
 		{
-			position[]={4676.2432,10.721498,2621.3821};
+			position[]={2236.0391,0.63119155,1923.3735};
 			name="spawn1";
 			type="Empty";
 		};
 		class Item4
 		{
-			position[]={622.23846,13.133074,2833.8318};
+			position[]={8738.1328,0.45720705,2122.1082};
 			name="spawn2";
 			type="Empty";
 		};
 		class Item5
 		{
-			position[]={3186.8296,9.2354641,532.51721};
+			position[]={10909.267,0.57597214,2422.3096};
 			name="spawn3";
 			type="Empty";
 		};
 		class Item6
 		{
-			position[]={2346.5554,11.007203,4774.8096};
+			position[]={13510.764,0.44504455,5249.3027};
 			name="spawn4";
 			type="Empty";
 		};
@@ -1232,11 +1213,11 @@ class Intro
 {
 	addOns[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	addOnsAuto[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	randomSeed=6913869;
 	class Intel
@@ -1254,11 +1235,11 @@ class OutroWin
 {
 	addOns[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	addOnsAuto[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	randomSeed=4081731;
 	class Intel
@@ -1276,11 +1257,11 @@ class OutroLoose
 {
 	addOns[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	addOnsAuto[]=
 	{
-		"thirskw"
+		"chernarus"
 	};
 	randomSeed=4975929;
 	class Intel

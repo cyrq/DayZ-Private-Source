@@ -30,17 +30,8 @@ setToneMapping "Filmic";
 
 // Run the server monitor
 if (isServer) then {
+	hiveInUse = true;
 	_serverMonitor = [] execVM "\z\addons\dayz_server\system\server_monitor.sqf";
-};
-
-if (!isServer && isNull player) then {
-	waitUntil { !isNull player };
-	waitUntil { time > 3 };
-};
-
-if (!isServer && player != player) then {
-	waitUntil { player == player };
-	waitUntil { time > 3 };
 };
 
 // Run the player monitor

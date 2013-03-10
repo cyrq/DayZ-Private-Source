@@ -5,7 +5,6 @@ enableSaving [false, false];
 
 // Variable Initialization
 dayZ_instance = 1;
-hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
 dayz_previousID = 0;
@@ -45,9 +44,8 @@ if (!isServer && player != player) then {
 
 // Run the player monitor
 if (!isDedicated) then {
-	0 spawn { while {true} do { if ((cameraView == "EXTERNAL" || cameraView == "GROUP") && (vehicle player isKindOf "Air")) then { vehicle player switchCamera "INTERNAL"; titleText["This type of vehicle is 1st Person only!", "PLAIN DOWN", 5] }; sleep 0.1; }; };
 	0 fadeSound 0;
-	0 cutText [(localize "STR_AUTHENTICATING"), "BLACK FADED", 60];
+	0 cutText [(localize "STR_AUTHENTICATING"), "BLACK FADED",60];
 
 	_id = player addEventHandler ["Respawn", { _id = [] spawn player_death; }];
 	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";

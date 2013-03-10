@@ -1,11 +1,10 @@
 // Mission Initialization
-startLoadingScreen ["", "DayZ_loadingScreen"];
+startLoadingScreen ["", "RscDisplayLoadCustom"];
 cutText ["", "BLACK OUT"];
 enableSaving [false, false];
 
 // Variable Initialization
 dayZ_instance = 1;
-hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
 dayz_previousID = 0;
@@ -47,7 +46,8 @@ if (!isServer && player != player) then {
 // Run the player monitor
 if (!isDedicated) then {
 	0 fadeSound 0;
-	0 cutText [(localize "STR_AUTHENTICATING"), "BLACK FADED", 60];
+	waitUntil { !isNil "dayz_loadScreenMsg" };
+	dayz_loadScreenMsg = (localize "STR_AUTHENTICATING");
 	
 	_id = player addEventHandler ["Respawn", { _id = [] spawn player_death; }];
 	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";

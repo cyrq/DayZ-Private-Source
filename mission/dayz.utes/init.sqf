@@ -5,7 +5,6 @@ enableSaving [false, false];
 
 // Variable Initialization
 dayZ_instance = 1;
-hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
 dayz_previousID = 0;

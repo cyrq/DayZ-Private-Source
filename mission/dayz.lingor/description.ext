@@ -1,9 +1,11 @@
 respawn = "BASE";
 respawndelay = 5;
+loadScreen = "\z\addons\dayz_code\gui\loadingscreen.paa";
 onLoadMission = "DayZ Lingor";
 OnLoadIntro = "Welcome to Lingor Island";
 OnLoadIntroTime = False;
 OnLoadMissionTime = False;
+onPauseScript = "\z\addons\dayz_code\compile\player_onPause.sqf";
 disabledAI = true;
 disableChannels[] = {0,2,6};
 enableItemsDropping = 0;

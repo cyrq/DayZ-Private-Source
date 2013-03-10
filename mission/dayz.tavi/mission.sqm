@@ -1168,8 +1168,8 @@ class Mission
 		items=7;
 		class Item0
 		{
-			position[]={8511.4658,-0.14474626,16773.117};
-			name="center";
+			position[]={16139.063,151.63756,8182.8467};
+			name="spawn0";
 			type="Empty";
 		};
 		class Item1
@@ -1180,32 +1180,32 @@ class Mission
 		};
 		class Item2
 		{
-			position[]={16139.063,151.63756,8182.8467};
-			name="spawn0";
-			type="Empty";
-		};
-		class Item3
-		{
 			position[]={15003.896,91.716476,7388.6104};
 			name="spawn1";
 			type="Empty";
 		};
-		class Item4
+		class Item3
 		{
 			position[]={17398.635,188.16295,6572.8042};
 			name="spawn2";
 			type="Empty";
 		};
-		class Item5
+		class Item4
 		{
 			position[]={17346.654,208.76871,8191.2578};
 			name="spawn3";
 			type="Empty";
 		};
-		class Item6
+		class Item5
 		{
 			position[]={14817.603,7.2196846,10913.577};
 			name="spawn4";
+			type="Empty";
+		};
+		class Item6
+		{
+			position[]={8511.4658,-0.14474626,16773.117};
+			name="center";
 			type="Empty";
 		};
 	};
