@@ -258,6 +258,8 @@ class FSM
 			"	_diff=((_dateNum - dateToNumber(date)) * 365 * 24 * 60);" \n
 			"	if (abs(_diff) > 5) then {" \n
 			"		setDate _date;" \n
+			"		dayzSetDate = _date;" \n
+			"		publicVariable ""dayzSetDate"";" \n
 			"		diag_log format[""TIME SYNC: Local Time set to %1"", _date];" \n
 			"	};" \n
 			"};" \n
