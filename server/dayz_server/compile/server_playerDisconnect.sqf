@@ -4,7 +4,7 @@ _playerID 			= _this select 0;
 _playerName 		= _this select 1;
 _object 			= call compile format ["player%1", _playerID];
 _characterID 		= _object getVariable ["characterID", "0"];
-_isInCombat 		= _object getVariable ["isincombat", 0];
+_timeout 		= _object getVariable ["combattimeout", 0];
 _playerIDtoarray 	= [];
 _playerIDtoarray 	= toArray _playerID;
 
@@ -16,7 +16,7 @@ if (59 in _playerIDtoarray) exitWith {
 	diag_log ("PLAYER: EXITED");
 };
 
-if (_isInCombat > 0) then {
+if (_timeout - time) > 0) then {
 	diag_log format ["COMBATLOG: %1 (%2)", _playerName, _playerID];
 	dayz_combatLog = _playerName;
 	publicVariable "dayz_combatLog";
