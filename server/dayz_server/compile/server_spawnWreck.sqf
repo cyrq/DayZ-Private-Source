@@ -52,15 +52,17 @@ while {true} do {
 		_crash setVariable ["ObjectID", 1, true];
 
 		if (_spawnFire) then {
-			["dayzFire", [_crash, 2, time, false, _fadeFire]] call broadcastRpcCallAll;
+			//["dayzFire", [_crash, 2, time, false, _fadeFire]] call broadcastRpcCallAll;
+			dayzFire = [_crash,2,time,false,_fadeFire];
+			publicVariable "dayzFire";
 			_crash setvariable ["fadeFire", _fadeFire, true];
 		};
 
 		_num 			= _lootDrops;
 		_itemTypes 		= [] + getArray (configFile >> "CfgBuildingLoot" >> _lootTable >> "itemType");
-		_index 			= dayz_CBLCounts find (count _itemTypes);
+		_index 			= dayz_CBLBase find _lootTable;
 		_weights 		= dayz_CBLChances select _index;
-		_cntWeights 	= count _weights;
+		_cntWeights 		= count _weights;
 
 		for "_x" from 1 to _num do {
 			_index = floor(random _cntWeights);
