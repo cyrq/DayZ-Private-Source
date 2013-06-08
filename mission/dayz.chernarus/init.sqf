@@ -5,6 +5,7 @@ enableSaving [false, false];
 
 // Variable Initialization
 dayZ_instance = 1;
+//dayZ_serverName="UK1"; // optional server watermark (country code + server number)
 hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
@@ -51,6 +52,7 @@ if (!isDedicated) then {
 
 	_id = player addEventHandler ["Respawn", { _id = [] spawn player_death; }];
 	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";
+	// [] execVM "\z\addons\dayz_code\system\antihack.sqf"; //Optional Anti TP
 	
 	#include "gcam\gcam_config.hpp"
 	#include "gcam\gcam_functions.sqf"
