@@ -1,3 +1,4 @@
+/*
 private ["_unitArray", "_handle"];
 
 _unitArray = [];
@@ -15,3 +16,4 @@ if (isSinglePlayer) then {
 		waitUntil{scriptDone _handle};
 	};
 } forEach _unitArray;
+*/

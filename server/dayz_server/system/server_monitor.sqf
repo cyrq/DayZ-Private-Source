@@ -209,13 +209,24 @@ if (isDedicated) then {
 
 allowConnection = true;
 
+// Spawn camps --------------------------------------------------------------------------------------------------------
+
+	// quantity, marker, radius, min distance between 2 camps
+	Server_InfectedCamps = [3, "center", 4500, 2000] call server_bases;
+	dayzInfectedCamps = Server_InfectedCamps;
+	publicVariable "dayzInfectedCamps";
+
+// Anti Wallhack ------------------------------------------------------------------------------------------------------
+
+	call compile preprocessFileLineNumbers "\z\addons\dayz_server\compile\server_antiwallhack.sqf";
+
 // Spawn crashsites and wrecks ----------------------------------------------------------------------------------------
 
 if (SpawnHelis && worldName != "namalsk") then {
 	if (OldSpawn) then {
 		for "_x" from 1 to SpawnHelisCount do { _id = [] spawn spawn_helis; };
 	} else {
-		[["UH60Wreck_DZ", "UH1Wreck_DZ"], ["Military", "HeliCrash", "MilitarySpecial"], SpawnHelisCount, (50 * 60), (15 * 60), 0.75, 'center', 4000, true, false] spawn server_spawnWreck;
+		[["Mi8Wreck_DZ", "UH60Wreck_DZ", "UH1Wreck_DZ"], ["HeliCrashEAST", "HeliCrashWEST"], SpawnHelisCount, (50 * 60), (15 * 60), 0.75, 'center', 4000, true, false] spawn server_spawnWreck;
 	};
 };
 if (SpawnWrecks) then {

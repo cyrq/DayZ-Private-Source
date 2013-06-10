@@ -1,3 +1,4 @@
+/*
 private ["_position", "_size", "_loot", "_zeds", "_groups", "_group"];
 
 _position 	= _this select 0;
@@ -21,3 +22,4 @@ _groups 	= [];
 diag_log ("CLEANUP: Town Dezombified");
 
 dayz_zombifiedTowns = dayz_zombifiedTowns - [_town];
+*/

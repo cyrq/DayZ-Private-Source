@@ -1,3 +1,4 @@
+/*
 private ["_town", "_spot", "_buildings", "_list", "_size", "_numZeds", "_impt", "_position", "_buildings", "_tbuildings", "_numGroups", "_building", "_type"];
 
 _town 		= _this;
@@ -30,11 +31,11 @@ _tbuildings = count _buildings;
 _numGroups 	= 0;
 _i 			= 0;
 
-/*
+
 _markerstr	= createMarker["markername_" + (text _town),_position];
 _markerstr setMarkerShape "ELLIPSE";
 _markerstr setMarkerSize [_size, _size];
-*/
+
 
 _trigger = createTrigger ["EmptyDetector", _position];
 _trigger setTriggerArea [dayz_zSpawnDistance, dayz_zSpawnDistance, 0, false];
@@ -50,13 +51,13 @@ while {_numGroups < _numZeds and _i < _tbuildings} do {
 			_spot = _list call BIS_fnc_selectRandom;
 			_nearMen = (position _spot) nearEntities [["Man"], 50];
 			if (!isNull _spot and (count _nearMen == 0)) then {
-				/*
+				
 				_marker = createMarker [(text _town) + "Marker2" + str(_i), position _spot];
 				_marker setMarkerShape "ICON";
 				_marker setMarkerType "DOT";
 				_marker setMarkerColor "ColorBlue";
 				_marker setMarkerText str(_i);
-				*/
+				
 				_numGroups = _numGroups + 1;
 				(position _spot) spawn dayz_spawnZombies;
 			};
@@ -65,3 +66,4 @@ while {_numGroups < _numZeds and _i < _tbuildings} do {
 	_i = _i + 1;
 	sleep 0.1;
 };
+*/

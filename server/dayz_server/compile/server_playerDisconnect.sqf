@@ -16,7 +16,7 @@ if (59 in _playerIDtoarray) exitWith {
 	diag_log ("PLAYER: EXITED");
 };
 
-if (_timeout - time) > 0) then {
+if ((_timeout - time) > 0) then {
 	diag_log format ["COMBATLOG: %1 (%2)", _playerName, _playerID];
 	dayz_combatLog = _playerName;
 	publicVariable "dayz_combatLog";
