@@ -140,51 +140,78 @@ class FSM
 		  init=/*%FSM<STATEINIT""">*/"_numDead={local _x} count allDead;" \n
 		   "" \n
 		   "if (_numDead > 300) then { " \n
+		   "diag_log (""CLEANUP: PERFORMING BODY CLEANUP ON "" + str(_numDead) + "" BODIES"");" \n
 		   "" \n
-		   "	diag_log (""CLEANUP: PERFORMING BODY CLEANUP ON "" + str(_numDead) + "" BODIES"");" \n
-		   "" \n
-		   "	// Cleanup zombies and players" \n
-		   "" \n
-		   "	_delQtyZ=0;	" \n
-		   "	_delQtyP=0;" \n
-		   "	{" \n
-		   "		if (local _x) then {" \n
-		   "			if (_x isKindOf ""zZombie_Base"") then {" \n
-		   "				deleteVehicle _x;" \n
-		   "				_delQtyZ=_delQtyZ + 1;" \n
-		   "			} else {" \n
-		   "				_pos=getPosATL _x;" \n
-		   "				_sfx=nearestObject [_pos, ""Sound_Flies""];" \n
-		   "				if (!(isNull _sfx)) then {" \n
-		   "					deleteVehicle _sfx;" \n
-		   "				};" \n
-		   "				deleteVehicle _x;" \n
-		   "				_delQtyP=_delQtyP + 1;" \n
+		   "_delQtyZ = 0;" \n
+		   "_numZombie = {_x isKindOf ""zZombie_Base""} count allDead;" \n
+		   "{" \n
+		   "	if (local _x) then {" \n
+		   "		if (_x isKindOf ""zZombie_Base"") then {" \n
+		   "			deleteVehicle _x;" \n
+		   "			_delQtyZ = _delQtyZ + 1;" \n
+		   "		} else {" \n
+		   "			_exists = _x in _deadBodies;" \n
+		   "			if(!_exists) then {" \n
+		   "				_deadBodies set [count _deadBodies,_x];" \n
 		   "			};" \n
 		   "		};" \n
-		   "	} forEach allDead;" \n
+		   "	};" \n
+		   "} forEach allDead;" \n
 		   "" \n
-		   "	// Check Flies" \n
-		   "	_dwUSOFC=0;" \n
-		   "	{" \n
-		   "		if (local _x) then {" \n
-		   "			deleteVehicle _x;" \n
-		   "			_dwUSOFC=_dwUSOFC+1;" \n
+		   "//Cleanup players" \n
+		   "_body = objNull;" \n
+		   "_delQtyP = 0;" \n
+		   "_delDo = _numDead - _numZombie;" \n
+		   "_delDo = ((_delDo min (count _deadBodies)) -1);" \n
+		   "if (_delDo<1) then {_delDo=1};" \n
+		   "for ""_i"" from 0 to _delDo do {" \n
+		   "	_body = _deadBodies select _i;" \n
+		   "	if(!isNil ""_body"") then {" \n
+		   "		_pos = getPosATL _body;" \n
+		   "		_sfx = nearestObject [_pos,""Sound_Flies""];" \n
+		   "		if (!(isNull _sfx)) then {" \n
+		   "			deleteVehicle _sfx;" \n
 		   "		};" \n
-		   "		diag_log (""CLEANUP: DELETED AN UNCONTROLLED SOUND OF FLIES: "" + str(_dwUSOFC) );" \n
-		   "	} forEach allMissionObjects ""Sound_Flies"";" \n
+		   "		deleteVehicle _body;" \n
+		   "		_delQtyP = _delQtyP + 1;" \n
+		   "	};" \n
+		   "	_deadBodies set [_i,""DEL""];" \n
 		   "" \n
-		   "	// Clean fireplaces" \n
-		   "	_dwUFPC=0;" \n
-		   "	{" \n
-		   "		if (local _x) then {" \n
-		   "			deleteVehicle _x;" \n
-		   "			_dwUFPC=_dwUFPC+1;" \n
-		   "		};" \n
-		   "		diag_log (""CLEANUP: DELETED AN UNCONTROLLED FIREPLACE: "" + str(_dwUFPC) );" \n
-		   "	} forEach allMissionObjects ""Land_Fire_DZ"";" \n
+		   "//Let's move this into the body removal sequence so uncontrolled flies are removed only if corpses are cleaned" \n
+		   "//Check Flies" \n
+		   "_isOK=-1;" \n
+		   "_dwUSOFC=0;" \n
+		   "{" \n
+		   "	//_isOk = {!alive _x} count (nearestObjects [_x, [""CAManBase""], 2]);" \n
+		   "	_isOk = {!alive _x} count (_x nearEntities [[""CAManBase""], 2]);" \n
+		   "	if (_isOk>-1) then {" \n
+		   "		diag_log (""DW_DEBUG _isOK: "" + str(_isOK) );" \n
+		   "	};" \n
+		   "	if ((_isOk>-1) AND (_isOK<1)) then {" \n
+		   "		//diag_log (""CLEANUP: DELETING A SOUND OF FLIES"");" \n
+		   "_dwUSOFC=_dwUSOFC+1;" \n
+		   "		deleteVehicle _x;" \n
+		   "		diag_log (""CLEANUP: DELETED AN UNCONTROLLED SOUND OF FLIES:"" + str(_dwUSOFC) );" \n
+		   "	};" \n
+		   "} forEach allMissionObjects ""Sound_Flies"";" \n
 		   "" \n
-		   "	diag_log (""CLEANUP: DELETED "" + str(_delQtyP) + "" PLAYER BODIES AND "" + str(_delQtyZ) + "" BODIES"");" \n
+		   "" \n
+		   "//Let's move this into the body removal sequence so uncontrolled fireplaces are removed only if corpses are cleaned" \n
+		   "//clean fireplaces" \n
+		   "_dwUFPC=0;" \n
+		   "{" \n
+		   "	if (local _x) then {" \n
+		   "		//diag_log (""CLEANUP: DELETING A UNCONTROLLED FIREPLACE"");" \n
+		   "		deleteVehicle _x;" \n
+		   "_dwUFPC=_dwUFPC+1;" \n
+		   "		diag_log (""CLEANUP: DELETED AN UNCONTROLLED FIREPLACE:"" + str(_dwUFPC) );" \n
+		   "	};" \n
+		   "} forEach allMissionObjects ""Land_Fire_DZ"";" \n
+		   "" \n
+		   "};" \n
+		   "_deadBodies = _deadBodies - [""DEL""];" \n
+		   "" \n
+		   "diag_log (""CLEANUP: DELETED "" + str(_delQtyP) + "" PLAYER BODIES AND "" + str(_delQtyZ) + "" BODIES"");" \n
 		   "};" \n
 		   ""/*%FSM</STATEINIT""">*/;
 		  precondition=/*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -207,21 +234,32 @@ class FSM
 		class cleanup_items
 		{
 			name="cleanup_items";
-			init=/*%FSM<STATEINIT""">*/"_missionObjs=allMissionObjects ""WeaponHolder"";" \n
-			"_qty=count _missionObjs;" \n
-			"//diag_log (""CLEANUP: PERFORMING ITEM CLEANUP: TOTAL "" + str(_qty) + "" LOOT BAGS"");" \n
-			"_delQty=0;" \n
-			"_qtyLoc=0;" \n
+			init = /*%FSM<STATEINIT""">*/"//_missionObjs = allMissionObjects ""WeaponHolder"" + allMissionObjects ""WeaponHolderBase"";" \n
+			"_missionObjs = allMissionObjects ""ReammoBox"";" \n
+			"_qty = count _missionObjs;" \n
+			"" \n
+			"diag_log (""CLEANUP:TOTAL "" + str(_qty) + "" LOOT BAGS"");" \n
+			"" \n
+			"_delQty = 0;" \n
 			"{" \n
-			"	if (local _x) then {" \n
-			"		_qtyLoc=_qtyLoc + 1;" \n
-			"		_keep=_x getVariable [""permaLoot"",false];" \n
-			"		_nearby=count (_x nearEntities [AllPlayers, 100]);" \n
-			"		if (!_keep && (_nearby == 0)) then {" \n
-			"			deleteVehicle _x;" \n
-			"			_delQty=_delQty + 1;" \n
-			"		};" \n
+			"	_keep = _x getVariable [""permaLoot"",false];" \n
+			"	 _nearby = {isPlayer _x} count (_x nearEntities [[""CAManBase""], 250]);" \n
+			"" \n
+			"	_created = (_x getVariable [""created"",-0.1]);" \n
+			"" \n
+			"	if (_created == -0.1) then {" \n
+			"		_x setVariable [""created"",(DateToNumber date)];" \n
 			"	};" \n
+			"" \n
+			"	_age = ((DateToNumber date) - _created) * 525948;" \n
+			"" \n
+			"//diag_log format [""Pile : %1, Created: %2, Age: %3"", _x,  _created, _age];" \n
+			"" \n
+			"	if ( (!_keep) && (_nearby==0) && (_age > 60) ) then {" \n
+			"		deleteVehicle _x;" \n
+			"		_delQty = _delQty + 1;" \n
+			"	};" \n
+			"" \n
 			"} forEach _missionObjs;" \n
 			"" \n
 			"if (_delQty > 0) then {" \n

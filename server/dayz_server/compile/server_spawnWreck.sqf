@@ -58,16 +58,17 @@ while {true} do {
 			_crash setvariable ["fadeFire", _fadeFire, true];
 		};
 
-		_num 			= _lootDrops;
-		_itemTypes 		= [] + getArray (configFile >> "CfgBuildingLoot" >> _lootTable >> "itemType");
-		_index 			= dayz_CBLBase find _lootTable;
-		_weights 		= dayz_CBLChances select _index;
-		_cntWeights 		= count _weights;
+		_num = 			_lootDrops;
+		_itemTypes = 		[] + getArray (configFile >> "CfgBuildingLoot" >> _lootTable >> "lootType");
+		_index = 		dayz_CBLBase  find _lootTable;
+		_weights = 		dayz_CBLChances select _index;
+		_cntWeights = 		count _weights;
 
 		for "_x" from 1 to _num do {
 			_index = floor(random _cntWeights);
 			_index = _weights select _index;
 			_itemType = _itemTypes select _index;
+			
 			[_itemType select 0, _itemType select 1, _position, 5] call spawn_loot;
 			
 			//Grass clear system uncomment for clear areas around choppers loot. Remove the // from the next two lines to enable
@@ -75,7 +76,7 @@ while {true} do {
 			//_clutter = createVehicle ["ClutterCutter_small_2_EP1", _position, [], 0, "CAN_COLLIDE"];
 			//_clutter setPos _position;
 
-			_nearby = _position nearObjects ["ReammoBox", sizeOf(_crashModel)];
+			_nearBy = _position nearObjects ["ReammoBox", sizeOf(_crashModel)];
 			{
 				_x setVariable ["permaLoot", true];
 			} forEach _nearBy;
