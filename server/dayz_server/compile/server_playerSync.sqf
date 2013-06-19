@@ -1,14 +1,15 @@
-private ["_characterID", "_name", "_temp", "_currentWpn", "_magazines", "_force", "_isNewPos", "_humanity", "_isNewGear", "_currentModel", "_modelChk", "_playerPos", "_playerGear", "_playerBackp", "_backpack", "_killsB", "_killsH", "_medical", "_isNewMed", "_character", "_timeSince", "_charPos", "_isInVehicle", "_distanceFoot", "_lastPos", "_kills", "_headShots", "_timeGross", "_timeLeft", "_onLadder", "_isTerminal", "_currentAnim", "_muzzles", "_array", "_key", "_lastTime", "_config", "_currentState", "_pos"];
+private ["_characterID", "_temp", "_currentWpn", "_magazines", "_force", "_isNewPos", "_humanity", "_isNewGear", "_currentModel", "_modelChk", "_playerPos", "_playerGear", "_playerBackp", "_backpack", "_killsB", "_killsH", "_medical", "_isNewMed", "_character", "_timeSince", "_charPos", "_isInVehicle", "_distanceFoot", "_lastPos", "_kills", "_headShots", "_timeGross", "_timeLeft", "_onLadder", "_isTerminal", "_currentAnim", "_muzzles", "_array", "_key", "_lastTime", "_config", "_currentState", "_pos"];
 
 _character 		= _this select 0;
 _magazines 		= _this select 1;
-_force 			= _this select 2;
+_force =	_this select 2;
+_force =	true;
+
 _characterID 	= _character getVariable ["characterID", "0"];
 _charPos 		= getPosATL _character;
 _isInVehicle 	= vehicle _character != _character;
 _timeSince 		= 0;
 _humanity 		= 0;
-_name			= name _character;
 
 if (_character isKindOf "Animal") exitWith {
 	diag_log ("PLAYER: SYNC FAILED: Player is of animal class");
@@ -42,7 +43,8 @@ if (_characterID != "0") then {
 	_distanceFoot 	= 0;
 
 	if (_isNewPos or _force) then {
-		if (!(((_charPos select 0) == 0) and ((_charPos select 1) == 0))) then {
+		if (((_charPos select 0) == 0) and ((_charPos select 1) == 0)) then {
+		} else {
 			_playerPos = [round(direction _character), _charPos];
 			_lastPos = _character getVariable["lastPos", _charPos];
 			
@@ -107,7 +109,7 @@ if (_characterID != "0") then {
 			_currentWpn = "";
 		} else {
 			if (typeName(_currentWpn) == "STRING") then {
-				_muzzles = getArray(configFile >> "CfgWeapons" >> _currentWpn >> "muzzles");
+				_muzzles = getArray(configFile >> "cfgWeapons" >> _currentWpn >> "muzzles");
 				if (count _muzzles > 1) then { _currentWpn = currentMuzzle _character; };	
 			} else {
 				_currentWpn = "";
@@ -120,7 +122,7 @@ if (_characterID != "0") then {
 		if (count _playerPos > 0) then {
 			_array = [];
 			{
-				if (_x > -25600 and _x < 25600) then { _array set [count _array, _x]; };
+				if (_x > -20000 and _x < 20000) then { _array set [count _array, _x]; };
 			} forEach (_playerPos select 1);
 			_playerPos set [1, _array];
 		};
@@ -134,12 +136,15 @@ if (_characterID != "0") then {
 		};
 		
 		// If player is in a vehicle, keep its position updated
-		if (_isInVehicle) then {
+		if (vehicle _character != _character) then {
 			[vehicle _character, "position"] call server_updateObject;
 		};
 		
 		// Force gear updates for nearby vehicles and deployables
-		[_charPos] call server_updateNearbyObjects;
+		_pos = _this select 0;
+		{
+			[_x, "gear"] call server_updateObject;
+		} forEach nearestObjects [_pos, ["Car", "Helicopter", "Motorcycle", "Ship", "TentStorage", "StashSmall", "StashMedium"], 10];
 
 		// Reset timer
 		if (_timeSince > 0) then {

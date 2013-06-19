@@ -1,38 +1,40 @@
-private ["_characterID", "_minutes", "_newObject", "_playerID", "_key", "_playerName", "_playerID", "_myGroup", "_group", "_victim", "_killer", "_weapon", "_message", "_distance","_loc_message","_victimName","_killerName"];
-
+#include "\z\addons\dayz_server\compile\server_toggle_debug.hpp"
 #include "\@dayzcc\addons\dayz_server_config.hpp"
 
-_victim removeAllEventHandlers "MPHit";
+private ["_characterID", "_minutes", "_newObject", "_playerID", "_key", "_playerName", "_playerID", "_myGroup", "_group", "_victim", "_killer", "_weapon", "_message", "_distance","_loc_message","_victimName","_killerName", "_killerPlayerID"];
 
-_characterID 	= _this select 0;
-_minutes 		= _this select 1;
-_newObject 		= _this select 2;
-_playerID 		= _this select 3;
-_playerName 	= _this select 4;
-_victim 		= _this select 2;
-_victimName 	= _victim getVariable ["bodyName", "nil"];
-_killer 		= _victim getVariable ["AttackedBy", "nil"];
-_killerName 	= _victim getVariable ["AttackedByName", "nil"];
+_characterID = 	_this select 0;
+_minutes =	_this select 1;
+_newObject = 	_this select 2;
+_playerID = 	_this select 3;
+_playerName = 	name _newObject;
+_victim removeAllEventHandlers "MPHit";
+_victim = _this select 2;
+_victim setVariable["processedDeath",time];
+_victim setVariable ["bodyName", _playerName, true];
+_victimName = _victim getVariable["bodyName", "nil"];
+_killer = _victim getVariable["AttackedBy", "nil"];
+_killerName = _victim getVariable["AttackedByName", "nil"];
 
 if (KillMsgs) then {
-	if (_killerName != "nil") then
+if (_killerName != "nil") then
+{
+	_weapon = _victim getVariable["AttackedByWeapon", "nil"];
+	_distance = _victim getVariable["AttackedFromDistance", "nil"];
+
+	if (_victimName == _killerName) then 
 	{
-		_weapon = _victim getVariable ["AttackedByWeapon", "nil"];
-		_distance = _victim getVariable ["AttackedFromDistance", "nil"];
+		_message = format["%1 killed himself",_victimName];
+		_loc_message = format["PKILL: %1 killed himself", _victimName];
+	}
+	else 
+	{
+		_killerPlayerID = getPlayerUID _killer;
+		_message = format["%1 was killed by %2 with weapon %3 from %4m",_victimName, _killerName, _weapon, _distance];
+		_loc_message = format["PKILL: %1 (%5) was killed by %2 (%6) with weapon %3 from %4m", _victimName, _killerName, _weapon, _distance, _playerID, _killerPlayerID];
+	};
 
-		if (_victimName == _killerName) then 
-		{
-			_message = format ["%1 killed himself", _victimName];
-			_loc_message = format ["PLAYER: KILL: %1 killed himself", _victimName];
-		}
-		else 
-		{
-			//_message = format ["%1 was killed by %2 with weapon %3", _victimName, _killerName, _weapon];
-			_message = format ["%1 was killed by %2", _victimName, _killerName];
-			_loc_message = format ["PLAYER: KILL: %1 was killed by %2 with weapon %3 from %4m", _victimName, _killerName, _weapon, _distance];
-		};
-
-		diag_log _loc_message;
+	diag_log _loc_message;
 		
 		if (KillMsgsIngame) then {
 			[nil, nil, rspawn, [_killer, _message], { (_this select 0) globalChat (_this select 1) }] call RE;
@@ -46,8 +48,8 @@ if (KillMsgs) then {
 	};
 };
 
-dayz_disco = dayz_disco - [_playerID];
-_newObject setVariable ["processedDeath", time];
+_newObject setVariable["processedDeath",time];
+_newObject setVariable ["bodyName", _playerName, true];
 
 if (typeName _minutes == "STRING") then {
 	_minutes = parseNumber _minutes;
@@ -59,3 +61,10 @@ if (_characterID != "0") then {
 } else {
 	deleteVehicle _newObject;
 };
+#ifdef PLAYER_DEBUG
+format ["Player UID#%3 CID#%4 %1 as %5 died at %2", 
+	_newObject call fa_plr2str, (getPosATL _newObject) call fa_coor2str,
+	getPlayerUID _newObject,_characterID,
+	typeOf _newObject
+];
+#endif

@@ -1,6 +1,11 @@
 private ["_botActive", "_int", "_newModel", "_doLoop", "_wait", "_hiveVer", "_isHiveOk", "_playerID", "_playerObj", "_randomSpot", "_publishTo", "_primary", "_secondary", "_key", "_result", "_charID", "_playerObj", "_playerName", "_finished", "_spawnPos", "_spawnDir", "_items", "_counter", "_magazines", "_weapons", "_group", "_backpack", "_worldspace", "_direction", "_newUnit", "_score", "_position", "_isNew", "_inventory", "_backpack", "_medical", "_survival", "_stats", "_state"];
 
 #include "\@dayzcc\addons\dayz_server_config.hpp"
+#include "\z\addons\dayz_server\compile\server_toggle_debug.hpp"
+
+#ifdef LOGIN_DEBUG
+diag_log ("STARTING LOGIN: " + str(_this));
+#endif
 
 _playerID 		= _this select 0;
 _playerObj 		= _this select 1;
@@ -8,8 +13,7 @@ _playerName 	= name _playerObj;
 _worldspace 	= [];
 
 if (_playerName == '__SERVER__' || _playerID == '' || local player) exitWith {};
-
-diag_log ("PLAYER: LOGIN STARTING: " + _playerName + " [" + _playerID + "]");
+if (isNil "sm_done") exitWith { diag_log ("Login cancelled, server is not ready. " + str(_playerObj)); };
 
 if (count _this > 2) then {
 	dayz_players = dayz_players - [_this select 2];
@@ -38,12 +42,20 @@ if ((_playerID == "") or (isNil "_playerID")) exitWith {
 	diag_log ("PLAYER: LOGIN FAILED: No Player ID");
 };
 
+#ifdef LOGIN_DEBUG
+diag_log ("LOGIN ATTEMPT: " + str(_playerID) + " " + _playerName);
+#endif
+
 // Connection Attempt
 _doLoop = 0;
 while {_doLoop < 5} do {
-	_key = format["CHILD:101:%1:%2:%3:", _playerID, dayZ_instance, _playerName];
+	_key = format["CHILD:101:%1:%2:%3:",_playerID,dayZ_instance,_playerName];
 	_primary = _key call server_hiveReadWrite;
-	if (count _primary > 0) then { if ((_primary select 0) != "ERROR") then { _doLoop = 9; }; };
+	if (count _primary > 0) then {
+		if ((_primary select 0) != "ERROR") then {
+			_doLoop = 9;
+		};
+	};
 	_doLoop = _doLoop + 1;
 };
 
@@ -71,16 +83,17 @@ if (!_isNew) then {
 	_hiveVer 	= _primary select 8;
 	
 	if (CheckCustInv && _model == "") then {
-		_key = format ["CHILD:999:select replace(cl.`inventory`, '""', '""""') inventory, replace(cl.`backpack`, '""', '""""') backpack, replace(coalesce(cl.`model`, 'Survivor2_DZ'), '""', '""""') model from `cust_loadout` cl join `cust_loadout_profile` clp on clp.`cust_loadout_id` = cl.`id` where clp.`unique_id` = '%1':[]:", _playerID];
-		_result = _key call server_hiveReadWrite;
+		_key = format["CHILD:999:select replace(cl.`inventory`, '""', '""""') inventory, replace(cl.`backpack`, '""', '""""') backpack, replace(coalesce(cl.`model`, 'Survivor2_DZ'), '""', '""""') model from `cust_loadout` cl join `cust_loadout_profile` clp on clp.`cust_loadout_id` = cl.`id` where clp.`unique_id` = '?':[%1]:",str(_playerID)];
+		_data = "HiveEXT" callExtension _key;
+		_result = call compile format ["%1", _data];
 		_status = _result select 0;
-
 		if (_status == "CustomStreamStart") then {
 			if ((_result select 1) > 0) then {
-				_result 	= _key call server_hiveReadWrite;
-				_inventory 	= call compile (_result select 0);
-				_backpack 	= call compile (_result select 1);
-				_model 		= call compile (_result select 2);
+				_data = "HiveEXT" callExtension _key;
+				_result = call compile format ["%1", _data];
+				_inventory = call compile (_result select 0);
+				_backpack = call compile (_result select 1);
+				_model = call compile (_result select 2);
 				diag_log ("PLAYER: CUSTOM INVENTORY LOADED: " + str(_inventory));
 			};
 		};
@@ -112,13 +125,12 @@ if (!_isNew) then {
 	_key = format["CHILD:203:%1:%2:%3:", _charID, [_wpns, _mags], [_bcpk, [], []]];
 	_key call server_hiveWrite;
 };
-
+#ifdef LOGIN_DEBUG
 diag_log ("PLAYER: LOGIN LOADED: " + _playerName + " [" + typeOf _playerObj + "]");
+#endif
 
 _isHiveOk = false;
 if (_hiveVer >= dayz_hiveVersionNo) then { _isHiveOk = true; };
 
-dayzPlayerLogin = [_charID, _inventory, _backpack, _survival, _isNew, dayz_versionNo, _model, _isHiveOk, _newPlayer];
-if (worldName == "namalsk") then { dayzPlayerLogin = [_charID, _inventory, _backpack, _survival, _isNew, dayz_versionNo, getText(configFile >> "CfgMods" >> "nc_dzn" >> "version"), _model, _isHiveOk, _newPlayer]; };
-
+dayzPlayerLogin = [_charID,_inventory,_backpack,_survival,_isNew,dayz_versionNo,_model,_isHiveOk,_newPlayer];
 (owner _playerObj) publicVariableClient "dayzPlayerLogin";

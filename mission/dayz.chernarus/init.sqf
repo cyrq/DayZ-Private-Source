@@ -5,7 +5,7 @@ enableSaving [false, false];
 
 // Variable Initialization
 dayZ_instance = 1;
-//dayZ_serverName="UK1"; // optional server watermark (country code + server number)
+//dayZ_serverName = "31337";			// server name (country code + server number)
 hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
@@ -29,30 +29,74 @@ progressLoadingScreen 1.0;
 "Filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4];
 setToneMapping "Filmic";
 
+BIS_Effects_startEvent = {
+	switch (_this select 0) do {
+		case "AirDestruction": {
+				[_this select 1] spawn BIS_Effects_AirDestruction;
+		};
+		case "AirDestructionStage2": {
+				[_this select 1, _this select 2, _this select 3] spawn BIS_Effects_AirDestructionStage2;
+		};
+		case "Burn": {
+				[_this select 1, _this select 2, _this select 3, false, true] spawn BIS_Effects_Burn;
+		};
+	};
+};
+
+"BIS_effects_gepv" addPublicVariableEventHandler {
+	(_this select 1) call BIS_Effects_startEvent;
+};
+
+if ((!isServer) && (isNull player) ) then
+{
+	waitUntil {!isNull player};
+	waitUntil {time > 3};
+};
+
+if ((!isServer) && (player != player)) then
+{
+	waitUntil {player == player};
+	waitUntil {time > 3};
+};
+
 // Run the server monitor
+if ((!isServer) && (isNull player) ) then
+{
+	waitUntil {!isNull player};
+	waitUntil {time > 3};
+};
+
+if ((!isServer) && (player != player)) then
+{
+	waitUntil {player == player};
+	waitUntil {time > 3};
+};
+
 if (isServer) then {
-	_serverMonitor = [] execVM "\z\addons\dayz_server\system\server_monitor.sqf";
-};
-
-if (!isServer && isNull player) then {
-	waitUntil { !isNull player };
-	waitUntil { time > 3 };
-};
-
-if (!isServer && player != player) then {
-	waitUntil { player == player };
-	waitUntil { time > 3 };
+	_serverMonitor = [] execVM "\z\addons\dayz_code\system\server_monitor.sqf";
+	// "PVDZ_sec_atp" addPublicVariableEventHandler { diag_log format["%1", _this select 1];};
 };
 
 // Run the player monitor
 if (!isDedicated) then {
+	//Conduct map operations
 	0 fadeSound 0;
-	waitUntil { !isNil "dayz_loadScreenMsg" };
+	waitUntil {!isNil "dayz_loadScreenMsg"};
 	dayz_loadScreenMsg = (localize "STR_AUTHENTICATING");
 
-	_id = player addEventHandler ["Respawn", { _id = [] spawn player_death; }];
+	//Run the player monitor
+	_id = player addEventHandler ["Respawn", {_id = [] spawn player_death;}];
 	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";
-	// [] execVM "\z\addons\dayz_code\system\antihack.sqf"; //Optional Anti TP
+	// [] execVM "\z\addons\dayz_code\system\antihack.sqf";
+};
+
+// Logo watermark: adding a logo in the bottom left corner of the screen with the server name in it
+if (!isNil "dayZ_serverName") then {
+	[] spawn {
+		waitUntil {(!isNull Player) and (alive Player) and (player == player)};
+		waituntil {!(isNull (findDisplay 46))};
+		5 cutRsc ["wm_disp","PLAIN"];
+		((uiNamespace getVariable "wm_disp") displayCtrl 1) ctrlSetText dayZ_serverName;
 	
 	#include "gcam\gcam_config.hpp"
 	#include "gcam\gcam_functions.sqf"
@@ -64,3 +108,5 @@ if (!isDedicated) then {
 		if (serverCommandAvailable "#kick") then { (findDisplay 46) displayAddEventHandler ["keyDown", "_this call fnc_keyDown"]; };
 	#endif
 };
+
+#include "\z\addons\dayz_code\system\REsec.sqf"
