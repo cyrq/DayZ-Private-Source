@@ -24,14 +24,13 @@ if (_killerName != "nil") then
 
 	if (_victimName == _killerName) then 
 	{
-		_message = format["%1 killed himself",_victimName];
-		_loc_message = format["PKILL: %1 killed himself", _victimName];
+		_message = format ["%1 killed himself", _victimName];
+		_loc_message = format ["PLAYER: KILL: %1 killed himself", _victimName];
 	}
 	else 
 	{
-		_killerPlayerID = getPlayerUID _killer;
 		_message = format["%1 was killed by %2 with weapon %3 from %4m",_victimName, _killerName, _weapon, _distance];
-		_loc_message = format["PKILL: %1 (%5) was killed by %2 (%6) with weapon %3 from %4m", _victimName, _killerName, _weapon, _distance, _playerID, _killerPlayerID];
+		_loc_message = format ["PLAYER: KILL: %1 was killed by %2 with weapon %3 from %4m", _victimName, _killerName, _weapon, _distance];
 	};
 
 	diag_log _loc_message;

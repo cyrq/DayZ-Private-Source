@@ -20,13 +20,10 @@ else
 
 _distance = _victim distance _attacker;
 
-_victimPlayerID = getPlayerUID _victim;
-_attakerPlayerID = getPlayerUID _attacker;
-
 	if (HitMsgs) then {
-		diag_log format["PHIT: %1 (%5) was hit by %2 (%6) with %3 from %4m", _victim, _attacker, _weapon, _distance, _victimPlayerID, _attakerPlayerID];
+		diag_log format ["PLAYER: HIT: %1 was hit by %2 with %3 from %4m", _victim, _attacker, _weapon, _distance];
 	if (HitMsgsIngame) then {
-		_message = format ["%1 was hit by %2", _victim, _attacker];		
+		_message = format ["%1 was hit by %2", _victim, _attacker];
 		[nil, nil, rspawn, [_victim, _message], { (_this select 0) globalChat (_this select 1) }] call RE;
 	};
 };
