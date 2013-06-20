@@ -31,17 +31,6 @@ diag_log ("HIVE: Starting ...");
 	_outcome = _result select 0;
 	if(_outcome == "PASS") then {
 		_date = _result select 1;
-		
-		//Date setup
-		_year = _date select 0;
-		_month = _date select 1;
-		_day = _date select 2;
-		_hour = _date select 3;
-		_minute = _date select 4;
-		
-		//Force full moon nights
-		_date = [2012,6,6,_hour,_minute];
-		
 		if(isDedicated) then {
 			setDate _date;
 			dayzSetDate = _date;

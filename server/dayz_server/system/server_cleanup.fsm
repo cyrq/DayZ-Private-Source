@@ -290,17 +290,9 @@ class FSM
        "_outcome = _result select 0;" \n
        "if(_outcome == ""PASS"") then {" \n
        "	_date = _result select 1;" \n
-       "" \n
-       "	//date setup" \n
-       "	_year = _date select 0;" \n
-       "	_month = _date select 1;" \n
-       "	_day = _date select 2;" \n
-       "	_hour = _date select 3;" \n
-       "	_minute = _date select 4;" \n
-       "" \n
-       "	//Force full moon nights" \n
-       "	_date = [2012,6,6,_hour,_minute];" \n
-       "" \n
+	   "	_dateNum=dateToNumber(_date); " \n
+	   "	_diff=((_dateNum - dateToNumber(date)) * 365 * 24 * 60);" \n
+	   "	if (abs(_diff) > 5) then {" \n
        "	setDate _date;" \n
        "	dayzSetDate = _date;" \n
        "	publicVariable ""dayzSetDate"";" \n
