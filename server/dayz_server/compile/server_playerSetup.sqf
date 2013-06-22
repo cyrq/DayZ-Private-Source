@@ -8,7 +8,7 @@ _characterID 	= _this select 0;
 _playerObj 		= _this select 1;
 _playerID 		= getPlayerUID _playerObj;
 
-if (isNull _playerObj or !isPlayer _playerObj) exitWith {
+if (isNull _playerObj) exitWith {
 	diag_log ("PLAYER: SETUP FAILED: Player Object Null");
 };
 
@@ -22,7 +22,9 @@ if (_playerID == "") exitWith {
 
 private ["_dummy"];
 _dummy = getPlayerUID _playerObj;
-if ( _playerID != _dummy ) then { _playerID = _dummy; };
+if ( _playerID != _dummy ) then { 
+	diag_log format["DEBUG: _playerID miscompare with UID! _playerID:%1",_playerID];
+	_playerID = _dummy; };
 
 // Variables
 _worldspace 	= [];
@@ -127,8 +129,8 @@ if (count _stats > 0) then {
 	_playerObj addScore ((_stats select 0) - _score);
 	_playerObj setVariable ["zombieKills_CHK", (_stats select 0)];
 	_playerObj setVariable ["headShots_CHK", (_stats select 1)];
-	_playerObj setVariable ["humanKills_CHK", (_stats select 2)];
-	_playerObj setVariable ["banditKills_CHK", (_stats select 3)];
+	//_playerObj setVariable ["humanKills_CHK", (_stats select 2)];
+	//_playerObj setVariable ["banditKills_CHK", (_stats select 3)];
 
 	if (count _stats > 4) then {
 		if (!(_stats select 3)) then { _playerObj setVariable ["selectSex", true, true]; };

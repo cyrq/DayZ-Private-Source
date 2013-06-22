@@ -88,7 +88,6 @@ if (_characterID != "0") then {
 		_isTerminal 	= (getNumber (_config >> "terminal")) == 1;
 		_currentModel 	= typeOf _character;
 		_modelChk 		= _character getVariable ["model_CHK", ""];
-		_character addScore _kills;
 		
 		if (_currentModel == _modelChk) then {
 			_currentModel = "";
