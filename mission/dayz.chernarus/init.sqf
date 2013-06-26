@@ -88,6 +88,15 @@ if (!isDedicated) then {
 	_id = player addEventHandler ["Respawn", {_id = [] spawn player_death;}];
 	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";
 	// [] execVM "\z\addons\dayz_code\system\antihack.sqf";
+	
+	#include "gcam\gcam_config.hpp"
+	#include "gcam\gcam_functions.sqf"
+
+	#ifdef GCAM
+		waitUntil { alive Player };
+		waituntil { !(IsNull (findDisplay 46)) };
+		if (serverCommandAvailable "#kick") then { (findDisplay 46) displayAddEventHandler ["keyDown", "_this call fnc_keyDown"]; };
+	#endif
 };
 
 // Logo watermark: adding a logo in the bottom left corner of the screen with the server name in it
@@ -97,16 +106,7 @@ if (!isNil "dayZ_serverName") then {
 		waituntil {!(isNull (findDisplay 46))};
 		5 cutRsc ["wm_disp","PLAIN"];
 		((uiNamespace getVariable "wm_disp") displayCtrl 1) ctrlSetText dayZ_serverName;
-	
-	#include "gcam\gcam_config.hpp"
-	#include "gcam\gcam_functions.sqf"
-
-	#ifdef GCAM
-		waitUntil { alive Player };
-		waituntil { !(IsNull (findDisplay 46)) };
-
-		if (serverCommandAvailable "#kick") then { (findDisplay 46) displayAddEventHandler ["keyDown", "_this call fnc_keyDown"]; };
-	#endif
+	};
 };
 
 #include "\z\addons\dayz_code\system\REsec.sqf"
