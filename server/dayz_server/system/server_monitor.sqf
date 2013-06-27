@@ -225,7 +225,7 @@ if (isServer and isNil "sm_done") then {
 				_entity = createVehicle [_class, _point, [], 0, 
 					if (_class=="TentStorage") then {"NONE"} else {"CAN_COLLIDE"}
 				];	
-				_entity setVariable ["ObjectID", _ObjectID, true];
+				_entity setVariable ["ObjectUID", _ObjectID, true];
 				_entity setVariable ["CharacterID", _CharacterID, true];	
 				_entity setVariable ["lastUpdate",time];
 				_entity setDamage _damage;
