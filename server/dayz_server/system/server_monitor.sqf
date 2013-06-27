@@ -117,6 +117,7 @@ if (isServer and isNil "sm_done") then {
 		_fuel =	if ((typeName (_x select 7)) == "SCALAR") then { _x select 7 } else { 0 };
 		_damage = if ((typeName (_x select 8)) == "SCALAR") then { _x select 8 } else { 0.9 };  
 		_entity = nil;
+		_uniqueID = _x select 9;
 	
 		_dir = floor(random(360));
 		_point = getMarkerpos "respawn_west";	
@@ -225,13 +226,15 @@ if (isServer and isNil "sm_done") then {
 				_entity = createVehicle [_class, _point, [], 0, 
 					if (_class=="TentStorage") then {"NONE"} else {"CAN_COLLIDE"}
 				];	
-				_entity setVariable ["ObjectUID", _ObjectID, true];
+				_entity setVariable ["ObjectID", _ObjectID, true];
 				_entity setVariable ["CharacterID", _CharacterID, true];	
+				_entity setVariable ["ObjectUID", _uniqueID, true];
 				_entity setVariable ["lastUpdate",time];
 				_entity setDamage _damage;
 	
 				if (_class == "TentStorage") then { 
-					_entity addMPEventHandler ["MPKilled",{_this call vehicle_handleServerKilled;}]; 
+					_entity addMPEventHandler ["MPKilled",{_this call vehicle_handleServerKilled;}];
+					_entity setVariable ["ObjectID", "0", true];
 				};
 			}
 			else {
