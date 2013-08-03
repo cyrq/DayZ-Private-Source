@@ -29,6 +29,17 @@ progressLoadingScreen 1.0;
 "Filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4];
 setToneMapping "Filmic";
 
+/* BIS_Effects_* fixes from Dwarden */
+BIS_Effects_EH_Killed = compile preprocessFileLineNumbers "\z\addons\dayz_code\system\BIS_Effects\killed.sqf";
+BIS_Effects_AirDestruction = compile preprocessFileLineNumbers "\z\addons\dayz_code\system\BIS_Effects\AirDestruction.sqf";
+BIS_Effects_AirDestructionStage2 = compile preprocessFileLineNumbers "\z\addons\dayz_code\system\BIS_Effects\AirDestructionStage2.sqf";
+
+BIS_Effects_globalEvent = {
+	BIS_effects_gepv = _this;
+	publicVariable "BIS_effects_gepv";
+	_this call BIS_Effects_startEvent;
+};
+
 BIS_Effects_startEvent = {
 	switch (_this select 0) do {
 		case "AirDestruction": {
